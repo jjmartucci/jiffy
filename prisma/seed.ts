@@ -9,41 +9,6 @@ const makeUser = async () => {
     {
       name: "jiffy",
       password,
-      tags: {
-        create: [
-          {
-            name: "funny",
-          },
-          {
-            name: "oh no",
-          },
-          {
-            name: "remix",
-          },
-        ],
-      },
-      gifs: {
-        create: [
-          {
-            name: "Balmer",
-            width: 300,
-            height: 300,
-            filename: "ballmer.gif",
-          },
-          {
-            name: "Fail",
-            width: 300,
-            height: 300,
-            filename: "fail.gif",
-          },
-          {
-            name: "MGS Brent Rambo",
-            width: 300,
-            height: 300,
-            filename: "mgs-thumbs-up.gif",
-          },
-        ],
-      },
     },
   ];
 };
@@ -52,7 +17,7 @@ async function seedData() {
   console.log("Seeding...");
   const users = await makeUser();
 
-  const admin = await prisma.role.create({
+  await prisma.role.create({
     data: {
       name: "admin",
       users: {
