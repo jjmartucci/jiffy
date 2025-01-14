@@ -1,0 +1,5 @@
+.Unauthorized {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  grid-column-gap: 16px;
+}

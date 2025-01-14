@@ -1,0 +1,53 @@
+.GlowBox {
+  position: relative;
+  margin: 2rem auto;
+}
+
+.Glowbox_Inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--mantine-color-body);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.GlowBox:before {
+  content: "";
+  top: -4px;
+  left: -4px;
+  position: absolute;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  border-radius: 8px;
+  border: 1px solid var(--mantine-color-yellow-2);
+  background: linear-gradient(
+    45deg,
+    var(--mantine-color-cyan-2),
+    var(--mantine-color-yellow-2),
+    var(--mantine-color-teal-7),
+    var(--mantine-color-grape-7)
+  );
+  z-index: -1;
+}
+
+.GlowBox:after {
+  content: "";
+  top: -8px;
+  left: -8px;
+  position: absolute;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
+  border-radius: 12px;
+  background: linear-gradient(
+    45deg,
+    var(--mantine-color-cyan-2),
+    var(--mantine-color-yellow-2),
+    var(--mantine-color-teal-7),
+    var(--mantine-color-grape-7)
+  );
+  filter: blur(4px);
+  z-index: -5;
+}

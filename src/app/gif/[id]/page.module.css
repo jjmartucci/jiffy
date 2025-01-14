@@ -1,0 +1,12 @@
+.GifPage {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.GifPage_Inner {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  grid-column-gap: 1rem;
+}

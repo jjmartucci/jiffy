@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
+import "@mantine/core/styles.css";
+
+import styles from "./layout.module.css";
+import GlobalHeader from "@/components/GlobalHeader/GlobalHeader";
+import { NextAuthProvider } from "@/providers/NextAuth/NextAuthProvider";
+
+import { ColorSchemeScript, MantineProvider, createTheme } from "@mantine/core";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,11 +31,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const theme = createTheme({
+    /** Your theme override here */
+  });
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
+      <Head>
+        <ColorSchemeScript />
+      </Head>
+      <NextAuthProvider>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <MantineProvider theme={theme} defaultColorScheme="dark">
+            <div className={styles.wrapper}>
+              <GlobalHeader />
+              <main>{children}</main>
+            </div>
+          </MantineProvider>
+        </body>
+      </NextAuthProvider>
     </html>
   );
 }

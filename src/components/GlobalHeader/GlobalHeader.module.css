@@ -1,0 +1,31 @@
+.GlobalHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 0 1rem 0 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--mantine-color-body);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.GlobalHeader_Logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.GlobalHeader_Logo_Title {
+  display: inline-block;
+  margin-left: 1rem;
+}
+
+.GlobalHeader_Actions {
+  display: flex;
+  margin-left: auto;
+}
+
+.GlobalHeader_Actions * + * {
+  margin-left: 1rem;
+}

@@ -1,0 +1,36 @@
+.Search_Results {
+  column-count: 1;
+  column-gap: 0.5em;
+  margin-bottom: 2rem;
+}
+
+@media screen and (min-width: $mantine-breakpoint-sm) {
+  .Search_Results {
+    column-count: 2;
+  }
+}
+
+@media screen and (min-width: $mantine-breakpoint-md) {
+  .Search_Results {
+    column-count: 3;
+  }
+}
+
+@media screen and (min-width: $mantine-breakpoint-lg) {
+  .Search_Results {
+    column-count: 4;
+  }
+}
+
+.Search_Results > div {
+  /* Masonry bricks or child elements */
+
+  display: inline-block;
+
+  width: 100%;
+}
+
+.Search_Results > div img:hover {
+  transform: scale(1.03);
+  transition: all 300ms ease-in-out;
+}
