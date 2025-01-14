@@ -26,9 +26,11 @@ COPY . .
 
 # Setup Prisma
 RUN \
-    if [ -f yarn.lock ]; then yarn run db-generate && yarn run db-seed; \
-    elif [ -f package-lock.json ]; then npm run db-generate && npm run db-seed; \
-    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run db-generate && pnpm run db-seed; \
+    if [ -f prisma/jiffy.db ]; then echo "Database already exists" && exit 0; \
+    fi; \
+    if [ -f yarn.lock ]; then yarn run db-initialize; \
+    elif [ -f package-lock.json ]; then npm run db-initialize; \
+    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run db-initialize; \
     else echo "Lockfile not found." && exit 1; \
     fi
 
@@ -56,11 +58,16 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/prisma ./prisma
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Set proper ownership and permissions
+RUN chown -R nextjs:nodejs ./prisma \
+    && chmod -R 755 ./prisma
 
 USER nextjs
 

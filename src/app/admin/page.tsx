@@ -22,7 +22,7 @@ const Admin = () => {
   const [gifsAdded, setGifsAdded] = useState(0);
   const [users, setUsers] = useState<Array<User>>([]);
   const [opened, { open, close }] = useDisclosure(false);
-
+  const [rebuilding, setRebuilding] = useState(false);
   const [dialogOpened, { close: dialogClose }] = useDisclosure(false);
 
   const getCount = async () => {
@@ -40,6 +40,12 @@ const Admin = () => {
     const countRequest = await fetch("/api/admin/scan");
     setGifsAdded((await countRequest.json()).newGifs);
     setScanning(false);
+  };
+
+  const rebuildSearch = async () => {
+    setRebuilding(true);
+    await fetch("/api/search/updateIndex", { method: "POST" });
+    setRebuilding(false);
   };
 
   useEffect(() => {
@@ -66,6 +72,7 @@ const Admin = () => {
 
       <Space h="xl" />
       <Title order={2}>Scan directory</Title>
+
       <Text>
         This will rescan the directory you’ve configured to hold your gifs and
         update the database with any new files.
@@ -73,6 +80,15 @@ const Admin = () => {
       <Space h="md" />
       <Button onClick={scanForGifs} loading={scanning}>
         Scan
+      </Button>
+
+      <Space h="xl" />
+
+      <Title order={2}>Rebuild search index</Title>
+
+      <Space h="md" />
+      <Button onClick={rebuildSearch} loading={rebuilding}>
+        Rebuild search index
       </Button>
 
       <Space h="xl" />

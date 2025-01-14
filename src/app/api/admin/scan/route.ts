@@ -75,6 +75,11 @@ export async function GET() {
       return checkFile(file, process.env.NEXT_PUBLIC_IMAGE_HOST_URL);
     });
     await Promise.all(checks);
+
+    // update search index
+    fetch(`${process.env.NEXT_PUBLIC_BASE_PATH}/api/search/updateIndex`, {
+      method: "POST",
+    });
     return NextResponse.json({ newGifs });
   }
 

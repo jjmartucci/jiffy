@@ -22,17 +22,19 @@ export async function GET(request: NextRequest) {
 
   const idx = lunr.Index.load(JSON.parse(data).index);
   const results = idx.search(query);
-  console.log(results);
+  console.log(`Found ${results.length} results for ${query}`);
 
   // first do a specific name search
-  const namedGifs = await prisma.gif.findMany({
+  const matchingGifs = await prisma.gif.findMany({
     where: {
       id: { in: results.map((r) => r.ref) },
     },
   });
 
+  console.log(`Returning ${matchingGifs.length} results for ${query}`);
+
   return NextResponse.json({
-    gifs: [...namedGifs],
+    gifs: [...matchingGifs],
     status: 200,
   });
 }

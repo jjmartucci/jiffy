@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "db-initialize": "prisma db push && prisma db seed",
     "db-generate": "prisma generate",
     "db-seed": "prisma db seed"
   },
