@@ -8,6 +8,7 @@ const makeUser = async () => {
   return [
     {
       name: "jiffy",
+      isDefaultUser: true,
       password,
     },
   ];

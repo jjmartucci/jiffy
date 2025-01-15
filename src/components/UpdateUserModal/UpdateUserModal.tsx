@@ -6,33 +6,46 @@ import {
   Stack,
   PasswordInput,
 } from "@mantine/core";
-import { useState } from "react";
+import { User } from "@prisma/client";
+import { useEffect, useState } from "react";
 
 type Props = {
+  currentUser: User;
   opened: boolean;
   close: () => void;
 };
 
-function AddUserModal({ opened, close }: Props) {
+function UpdateUserModal({ currentUser, opened, close }: Props) {
   //const [opened, { open, close }] = useDisclosure(false);
 
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(currentUser?.name);
   const [password, setPassword] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(currentUser?.role.name === "admin");
 
-  const addUser = async () => {
-    const addRequest = await fetch("/api/admin/addUser", {
-      method: "POST",
+  useEffect(() => {
+    setUsername(currentUser?.name);
+    setIsAdmin(currentUser?.role.name === "admin");
+  }, [currentUser]);
+
+  const updateUser = async () => {
+    const addRequest = await fetch("/api/admin/updateUser", {
+      method: "PATCH",
       body: JSON.stringify({
+        userId: currentUser.id,
         username,
         password,
         isAdmin,
       }),
     });
     const response = await addRequest.json();
-    console.log(response);
+    if (response.status === "200") {
+      close();
+    }
   };
 
+  if (currentUser === null) {
+    return null;
+  }
   return (
     <>
       <Modal opened={opened} onClose={close} title="Authentication">
@@ -58,10 +71,11 @@ function AddUserModal({ opened, close }: Props) {
             defaultChecked
             color="grape"
             label="is admin?"
+            disabled={currentUser?.isDefaultUser}
           />
 
-          <Button onClick={addUser} disabled={!username || !password}>
-            Add User
+          <Button onClick={updateUser} disabled={!username || !password}>
+            Update User
           </Button>
         </Stack>
       </Modal>
@@ -69,4 +83,4 @@ function AddUserModal({ opened, close }: Props) {
   );
 }
 
-export default AddUserModal;
+export default UpdateUserModal;

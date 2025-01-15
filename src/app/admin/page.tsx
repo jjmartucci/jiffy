@@ -1,6 +1,7 @@
 "use client";
 import AddUserModal from "@/components/AddUserModal/AddUserModal";
 import AuthorizedPage from "@/components/AuthorizedPage/AuthorizedPage";
+import UpdateUserModal from "@/components/UpdateUserModal/UpdateUserModal";
 import {
   Button,
   Title,
@@ -9,6 +10,7 @@ import {
   Space,
   Table,
   Group,
+  Stack,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { User } from "@prisma/client";
@@ -23,7 +25,10 @@ const Admin = () => {
   const [users, setUsers] = useState<Array<User>>([]);
   const [opened, { open, close }] = useDisclosure(false);
   const [rebuilding, setRebuilding] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>();
   const [dialogOpened, { close: dialogClose }] = useDisclosure(false);
+  const [updateOpened, { open: updateOpen, close: updateClose }] =
+    useDisclosure(false);
 
   const getCount = async () => {
     const countRequest = await fetch("/api/admin/count");
@@ -48,6 +53,25 @@ const Admin = () => {
     setRebuilding(false);
   };
 
+  /** More logic needs to be done here, should be a soft delete
+  const deleteUser = async (userId: string) => {
+   
+    const deletedResponse = await fetch("/api/admin/deleteUser", {
+      method: "DELETE",
+      body: JSON.stringify({ userId }),
+    });
+    getUserList();
+    dialogOpen();
+    
+  };
+ */
+
+  const changeUsernameOrPassword = async (user: User) => {
+    setEditingUser(user);
+
+    updateOpen();
+  };
+
   useEffect(() => {
     getCount();
     getUserList();
@@ -59,6 +83,19 @@ const Admin = () => {
         <Table.Td>{user.name}</Table.Td>
         <Table.Td>{`${user.createdAt}`}</Table.Td>
         <Table.Td>{user.role.name}</Table.Td>
+        <Table.Td></Table.Td>
+        <Table.Td>
+          <Group>
+            <Button size="xs" onClick={() => changeUsernameOrPassword(user)}>
+              Change name / password
+            </Button>
+            {!user.isDefaultUser && (
+              <Button variant="light" size="xs" color="red" disabled>
+                Delete User
+              </Button>
+            )}
+          </Group>
+        </Table.Td>
       </Table.Tr>
     ));
     return rows;
@@ -111,6 +148,13 @@ const Admin = () => {
       </Table>
 
       <AddUserModal opened={opened} close={close} />
+
+      <UpdateUserModal
+        currentUser={editingUser}
+        opened={updateOpened}
+        close={updateClose}
+      />
+
       <Dialog
         opened={dialogOpened}
         onClose={dialogClose}

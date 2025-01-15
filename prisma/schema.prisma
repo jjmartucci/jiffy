@@ -24,6 +24,7 @@ model User {
   tags      Tag[]
   role      Role     @relation(fields: [roleId], references: [id])
   roleId    String
+  isDefaultUser Boolean @default(false)
 }
 
 model Gif {

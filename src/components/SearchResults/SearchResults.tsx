@@ -1,9 +1,9 @@
-import { Prisma } from "@prisma/client";
+import { Gif as Giftype } from "@prisma/client";
 import styles from "./SearchResults.module.css";
 import Gif from "../Gif/Gif";
 
 type Props = {
-  searchResults: Array<Prisma.GifSelect>;
+  searchResults: Array<Giftype>;
 };
 const SearchResults = ({ searchResults }: Props) => {
   return (

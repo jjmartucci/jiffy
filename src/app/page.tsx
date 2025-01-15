@@ -20,6 +20,7 @@ export default async function Home() {
   return (
     <div>
       <SearchBar />
+      {`${gifs.length} gifs`}
       <SearchResults searchResults={gifs} />
     </div>
   );
