@@ -24,15 +24,6 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Setup Prisma
-RUN \
-    if [ -f prisma/jiffy.db ]; then echo "Database already exists" && exit 0; \
-    fi; \
-    if [ -f yarn.lock ]; then yarn run db-initialize; \
-    elif [ -f package-lock.json ]; then npm run db-initialize; \
-    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run db-initialize; \
-    else echo "Lockfile not found." && exit 1; \
-    fi
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -65,9 +56,19 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Copy in the start script
+COPY ./start.sh ./start.sh
+RUN chmod u+x start.sh
+
 # Set proper ownership and permissions
 RUN chown -R nextjs:nodejs ./prisma \
     && chmod -R 755 ./prisma
+
+# Make the db folder
+RUN mkdir db
+RUN chown -R nextjs:nodejs ./db \
+    && chmod -R 755 ./db
+RUN chmod u+x ./prisma/seed.ts
 
 USER nextjs
 
@@ -78,4 +79,4 @@ ENV PORT=3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+CMD ["./start.sh"]

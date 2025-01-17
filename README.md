@@ -19,7 +19,12 @@ bun dev
 
 ```
 docker build -t nextjs-docker .
-docker run -p 3000:3000 nextjs-docker
+docker run -p  3000:3000 nextjs-docker
+```
+
+Complete Docker rebuild for dev:
+```
+docker build --pull --no-cache -t nextjs-docker .
 ```
 
 ## S3 Notes
