@@ -17,18 +17,20 @@ async function execute(command) {
 
 async function startUp() {
   await execute("echo the PWD is : ${PWD}");
-  await execute("npx prisma db push --skip-generate");
+
+  if (fs.existsSync(path.join(process.cwd(), "db", "jiffy.db"))) {
+    // for now do nothing?
+    console.log("we have a database already.");
+  } else {
+    await execute("npx prisma db push --skip-generate");
+  }
 
   // TODO: Figure out why the seed can't exist inside the prisma folder
   await execute("cp prisma/seed.ts db/");
   await execute("npm install --no-save ts-node");
+
+  // Seed checks for the default user first so it's always safe to run
   await execute(`npx prisma db seed`);
 }
 
-if (fs.existsSync(path.join(process.cwd(), "db", "jiffy.db"))) {
-  // for now do nothing?
-  console.log("we have a database already.");
-} else {
-  console.log("No db found.");
-  startUp();
-}
+startUp();
