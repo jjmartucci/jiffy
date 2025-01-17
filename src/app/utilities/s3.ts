@@ -2,6 +2,7 @@ import {
   DeleteObjectsCommand,
   ListObjectsV2Command,
   S3Client,
+  S3ServiceException,
   waitUntilObjectNotExists,
 } from "@aws-sdk/client-s3";
 

@@ -62,7 +62,6 @@ export async function POST(request: NextRequest) {
   const formData = await request.json();
   const session = await getServerSession(authOptions);
 
-  console.log(formData);
   const command = new PutObjectAclCommand({
     Bucket: s3BucketName,
     Key: formData.key,
@@ -84,7 +83,8 @@ export async function POST(request: NextRequest) {
   });
 
   try {
-    await client.send(command);
+    const response = await client.send(command);
+    console.log(response);
     console.log("File ACL updated successfully.");
   } catch (err) {
     return NextResponse.json(

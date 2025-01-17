@@ -24,7 +24,7 @@ export default async function Search({
   return (
     <>
       <SearchBar />
-      <Title order={2}>{`${searchResults} gifs for ${query}`}</Title>
+      <Title order={2}>{`${searchResults.length} ${query} gifs`}</Title>
       <SearchResults searchResults={searchResults} />
       {searchResults.length === 0 && (
         <div>
