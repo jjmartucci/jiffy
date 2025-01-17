@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 
 const Admin = () => {
   const { data: session } = useSession();
+  const [backingUp, setBackingUp] = useState(false);
   const [gifCount, setGifCount] = useState();
   const [scanning, setScanning] = useState(false);
   const [gifsAdded, setGifsAdded] = useState(0);
@@ -50,6 +51,12 @@ const Admin = () => {
     setRebuilding(true);
     await fetch("/api/search/updateIndex", { method: "POST" });
     setRebuilding(false);
+  };
+
+  const backupDb = async () => {
+    setBackingUp(true);
+    await fetch("/api/admin/backup", { method: "POST" });
+    setBackingUp(false);
   };
 
   /** More logic needs to be done here, should be a soft delete
@@ -145,6 +152,16 @@ const Admin = () => {
         </Table.Thead>
         <Table.Tbody>{userRows()}</Table.Tbody>
       </Table>
+
+      <Space h="xl" />
+      <Title order={2}>Database Backup</Title>
+      <Text>
+        Backup the SQLite db to the same S3 bucket where your gifs are stored.
+      </Text>
+      <Space h="md" />
+      <Button onClick={backupDb} loading={backingUp}>
+        Backup Now
+      </Button>
 
       <AddUserModal opened={opened} close={close} />
 

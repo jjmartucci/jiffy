@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "prisma": {
-    "seed": "ts-node --transpile-only --compiler-options {\"module\":\"CommonJS\"} db/seed.ts"
+    "seed": "ts-node --transpile-only --skip-project --compiler-options {\"module\":\"CommonJS\"} db/seed.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.722.0",

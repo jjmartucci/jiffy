@@ -1,10 +1,12 @@
 import {
   DeleteObjectsCommand,
   ListObjectsV2Command,
+  PutObjectCommand,
   S3Client,
   S3ServiceException,
   waitUntilObjectNotExists,
 } from "@aws-sdk/client-s3";
+import { readFile } from "node:fs/promises";
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
@@ -93,6 +95,41 @@ export const deleteS3Keys = async ({ keys }: { keys: [string] }) => {
     } else if (caught instanceof S3ServiceException) {
       console.error(
         `Error from S3 while deleting objects from ${bucketName}.  ${caught.name}: ${caught.message}`
+      );
+    } else {
+      throw caught;
+    }
+  }
+};
+
+export const uploadFile = async (file: string) => {
+  const client = getS3Client();
+  if (!client) {
+    console.error("Something went wrong creating the S3 client.");
+    return;
+  }
+  const command = new PutObjectCommand({
+    Bucket: s3BucketName,
+    Key: `${process.env.S3_DB_BACKUP}.${Date.now()}.jiffy.db`,
+    Body: await readFile(file),
+  });
+
+  try {
+    const response = await client.send(command);
+    console.log(response);
+  } catch (caught) {
+    if (
+      caught instanceof S3ServiceException &&
+      caught.name === "EntityTooLarge"
+    ) {
+      console.error(
+        `Error from S3 while uploading object to ${s3BucketName}. \
+The object was too large. To upload objects larger than 5GB, use the S3 console (160GB max) \
+or the multipart upload API (5TB max).`
+      );
+    } else if (caught instanceof S3ServiceException) {
+      console.error(
+        `Error from S3 while uploading object to ${s3BucketName}.  ${caught.name}: ${caught.message}`
       );
     } else {
       throw caught;
