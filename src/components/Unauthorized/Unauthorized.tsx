@@ -1,4 +1,4 @@
-import { Text, Title } from "@mantine/core";
+import { Stack, Text, Title } from "@mantine/core";
 import Image from "next/image";
 import unauthorized from "@/images/unauthorized.gif";
 import styles from "./Unauthorized.module.css";
@@ -15,9 +15,11 @@ const Unauthorized = () => {
         />
       </div>
       <div>
-        <Title order={2}>You can’t do that!</Title>
-        <Text>Try logging in first.</Text>
-        <LoginButton />
+        <Stack align="flex-start">
+          <Title order={2}>You can’t do that!</Title>
+          <Text>Try logging in first.</Text>
+          <LoginButton />
+        </Stack>
       </div>
     </div>
   );

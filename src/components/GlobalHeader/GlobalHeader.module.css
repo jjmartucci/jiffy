@@ -22,10 +22,18 @@
 }
 
 .GlobalHeader_Actions {
-  display: flex;
   margin-left: auto;
 }
 
-.GlobalHeader_Actions * + * {
-  margin-left: 1rem;
+.GlobalHeader_Actions_Desktop {
+  display: none;
+}
+
+@media screen and (min-width: $mantine-breakpoint-sm) {
+  .GlobalHeader_Actions_Mobile {
+    display: none;
+  }
+  .GlobalHeader_Actions_Desktop {
+    display: block;
+  }
 }

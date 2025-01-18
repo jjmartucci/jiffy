@@ -1,5 +1,13 @@
 .Unauthorized {
   display: grid;
-  grid-template-columns: 400px 1fr;
+  grid-template-columns: 1fr;
   grid-column-gap: 16px;
+}
+
+@media screen and (min-width: $mantine-breakpoint-sm) {
+  .Unauthorized {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    grid-column-gap: 16px;
+  }
 }

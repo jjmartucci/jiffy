@@ -30,6 +30,7 @@ const UploadPage = () => {
   const [error, setError] = React.useState("");
   const [gifTags, setGifTags] = React.useState([]);
   const [gifDescription, setGifDescription] = React.useState("");
+  const [uploading, setUploading] = React.useState(false);
   // const [success, setSuccess] = React.useState(false);
   const [fileLoading, setFileLoading] = React.useState(false);
   // const [tagOptions, setTagOptions] = React.useState([]);
@@ -92,6 +93,7 @@ const UploadPage = () => {
 
     if (files.length === 0) {
       setError("Hey, I need a gif!");
+
       return;
     }
     if (!gifName) {
@@ -99,6 +101,7 @@ const UploadPage = () => {
       return;
     }
 
+    setUploading(true);
     const reader = new FileReader();
     reader.onload = async (event) => {
       const fileData = event.target?.result;
@@ -127,11 +130,13 @@ const UploadPage = () => {
         console.log(localSave);
         // handle success / errors then return
         if (localSave.status === 200) {
+          setUploading(false);
           showNewGifAndResetForm((await localSave.json()).gif);
           return;
         }
 
         // show error
+        setUploading(false);
         return;
       }
 
@@ -168,7 +173,7 @@ const UploadPage = () => {
                 body: JSON.stringify(body),
               });
               const newGif = await presignedPost.json();
-
+              setUploading(false);
               showNewGifAndResetForm(newGif.gif);
             });
           });
@@ -263,7 +268,7 @@ const UploadPage = () => {
                   minRows={2}
                 />
 
-                <Button variant="filled" type="submit">
+                <Button variant="filled" type="submit" loading={uploading}>
                   Upload
                 </Button>
               </Stack>

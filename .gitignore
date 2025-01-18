@@ -23,6 +23,9 @@
 # Prisma db
 /db
 
+# Search index
+/search
+
 # misc
 .DS_Store
 *.pem
