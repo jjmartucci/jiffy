@@ -1,5 +1,5 @@
 "use client";
-import { Skeleton } from "@mantine/core";
+import { Skeleton, Stack, Text } from "@mantine/core";
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./SkeletonImage.module.css";
@@ -13,6 +13,23 @@ type Props = {
 
 const SkeletonImage = ({ width, height, src, alt }: Props) => {
   const [loaded, setLoaded] = useState(false);
+  const [isError, setError] = useState(false);
+
+  if (isError) {
+    return (
+      <div className={styles.SkeletonImage_Error}>
+        <Stack
+          align="center"
+          justify="center"
+          className={styles.SkeletonImage_Error_Message}
+        >
+          <Text>😱</Text>
+          <Text size="xs">{`Can‘t find ${src}`}</Text>
+        </Stack>
+      </div>
+    );
+  }
+
   return (
     <>
       {!loaded && (
@@ -32,6 +49,7 @@ const SkeletonImage = ({ width, height, src, alt }: Props) => {
         style={{ objectFit: "contain" }}
         alt={alt}
         onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
         className={styles.SkeletonImage}
       />
     </>

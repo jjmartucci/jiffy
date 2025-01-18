@@ -67,10 +67,15 @@ RUN chmod u+x start.sh
 RUN chown -R nextjs:nodejs ./prisma \
     && chmod -R 755 ./prisma
 
-# Make the db folder
+# Make the db folder and search index floders
 RUN mkdir db
 RUN chown -R nextjs:nodejs ./db \
     && chmod -R 755 ./db
+
+RUN mkdir search
+RUN chown -R nextjs:nodejs ./search \
+    && chmod -R 755 ./search
+
 RUN chmod u+x ./prisma/seed.ts
 
 USER nextjs
