@@ -119,5 +119,7 @@ export async function POST(request: NextRequest) {
     },
   });
 
+  // update the search index with the new gif included
+  fetch(`${process.env.NEXT_PUBLIC_BASE_PATH}/api/admin/scan`);
   return NextResponse.json({ success: true, gif: createdGif });
 }
