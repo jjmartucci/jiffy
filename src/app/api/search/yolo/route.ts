@@ -6,7 +6,7 @@ import lunr from "lunr";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const query = searchParams.get("query");
+  const query = searchParams.get("q");
   const indexPath = path.join(process.cwd(), `search`, "index.json"); // Make sure this "uploads" directory exists
 
   try {
@@ -22,17 +22,27 @@ export async function GET(request: NextRequest) {
 
   const idx = lunr.Index.load(JSON.parse(data).index);
   const results = idx.search(query);
-  console.log(`Found ${results.length} results for ${query}`);
 
-  // first do a specific name search
+  if (results.length === 0) {
+    return NextResponse.json({
+      gif: "",
+      status: 200,
+    });
+  }
+
   const bestMatch = await prisma.gif.findFirst({
     where: {
-      id: results[0],
+      id: results[0].ref,
     },
   });
 
+  const imageUrl = path.join(
+    process.env.NEXT_PUBLIC_IMAGE_HOST_URL,
+    bestMatch?.filename
+  );
+
   return NextResponse.json({
-    gif: bestMatch,
+    gif: imageUrl,
     status: 200,
   });
 }
