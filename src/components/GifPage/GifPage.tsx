@@ -7,6 +7,7 @@ import path from "path";
 import GifData from "../GifData/GifData";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { createUrl } from "@/app/utilities/gifurl";
 
 type Props = {
   gifData: Prisma.GifSelect;
@@ -26,7 +27,7 @@ const GifPage = ({ gifData }: Props) => {
     gifData?.description || ""
   );
 
-  const imageUrl = path.join(
+  const imageUrl = createUrl(
     process.env.NEXT_PUBLIC_IMAGE_HOST_URL,
     gif?.filename
   );

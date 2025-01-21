@@ -16,3 +16,14 @@ export const uploadFormat = () => {
   }
   return UploadProcess.S3;
 };
+
+export const createUrl = (baseUrl: string, ...parts: Array<string>) => {
+  // Remove trailing slash from the base URL
+  baseUrl = baseUrl.replace(/\/+$/, "");
+
+  // Normalize each part by removing leading and trailing slashes
+  parts = parts.map((part) => part.replace(/^\/+|\/+$/g, ""));
+
+  // Join the base URL with the normalized parts
+  return [baseUrl, ...parts].join("/");
+};

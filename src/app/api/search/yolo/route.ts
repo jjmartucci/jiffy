@@ -3,6 +3,7 @@ import prisma from "@/db";
 import path from "path";
 import fs from "fs/promises";
 import lunr from "lunr";
+import { createUrl } from "@/app/utilities/gifurl";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -36,7 +37,7 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  const imageUrl = path.join(
+  const imageUrl = createUrl(
     process.env.NEXT_PUBLIC_IMAGE_HOST_URL,
     bestMatch?.filename
   );
