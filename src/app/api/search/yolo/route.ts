@@ -36,11 +36,8 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  // This should be NEXT_PUBLIC_IMAGE_HOST_URL
   const imageUrl = path.join(
-    process.env.S3_ENDPOINT,
-    process.env.S3_BUCKET_NAME,
-    process.env.NEXT_PUBLIC_UPLOAD_DIRECTORY,
+    process.env.NEXT_PUBLIC_IMAGE_HOST_URL,
     bestMatch?.filename
   );
 
