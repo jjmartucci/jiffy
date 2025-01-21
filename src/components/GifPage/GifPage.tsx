@@ -3,7 +3,6 @@ import { Prisma } from "@prisma/client";
 import styles from "./GifPage.module.css";
 import { Button, Dialog, Group, Space, Text, Title } from "@mantine/core";
 import SkeletonImage from "../SkeletonImage/SkeletonImage";
-import path from "path";
 import GifData from "../GifData/GifData";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
