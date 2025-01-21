@@ -21,20 +21,27 @@ export async function GET(request: NextRequest) {
   const data = await fs.readFile(indexPath, "utf8");
 
   const idx = lunr.Index.load(JSON.parse(data).index);
-  const results = idx.search(query);
-  console.log(`Found ${results.length} results for ${query}`);
+  try {
+    const results = idx.search(query);
+    console.log(`Found ${results.length} results for ${query}`);
 
-  // first do a specific name search
-  const matchingGifs = await prisma.gif.findMany({
-    where: {
-      id: { in: results.map((r) => r.ref) },
-    },
-  });
+    // first do a specific name search
+    const matchingGifs = await prisma.gif.findMany({
+      where: {
+        id: { in: results.map((r) => r.ref) },
+      },
+    });
 
-  console.log(`Returning ${matchingGifs.length} results for ${query}`);
+    console.log(`Returning ${matchingGifs.length} results for ${query}`);
 
-  return NextResponse.json({
-    gifs: [...matchingGifs],
-    status: 200,
-  });
+    return NextResponse.json({
+      gifs: [...matchingGifs],
+      status: 200,
+    });
+  } catch (e) {
+    return NextResponse.json({
+      message: `Search failed: ${e}`,
+      status: 500,
+    });
+  }
 }

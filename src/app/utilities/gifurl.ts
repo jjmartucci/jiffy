@@ -25,5 +25,6 @@ export const createUrl = (baseUrl: string, ...parts: Array<string>) => {
   parts = parts.map((part) => part.replace(/^\/+|\/+$/g, ""));
 
   // Join the base URL with the normalized parts
-  return [baseUrl, ...parts].join("/");
+  const string = [baseUrl, ...parts].join("/");
+  return new URL(string).href;
 };
