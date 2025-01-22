@@ -1,7 +1,7 @@
 import SearchBar from "@/components/SearchBar/SearchBar";
 import SearchResults from "@/components/SearchResults/SearchResults";
 import noResults from "@/images/no-results.gif";
-import { Center, Stack, Title } from "@mantine/core";
+import { Center, Space, Stack, Title } from "@mantine/core";
 import Image from "next/image";
 export default async function Search({
   searchParams,
@@ -20,13 +20,21 @@ export default async function Search({
   };
 
   const searchResults = await callSearch(query);
-
+  const count = searchResults.length;
   return (
     <>
       <SearchBar />
-      <Title order={2}>{`${searchResults.length} ${query} gifs`}</Title>
+      {count > 0 && (
+        <>
+          <Title order={2}>{`${count} ${
+            count === 1 ? "gif" : "gifs"
+          } found for ${query} `}</Title>
+          <Space h="xl" />
+        </>
+      )}
+
       <SearchResults searchResults={searchResults} />
-      {searchResults.length === 0 && (
+      {count === 0 && (
         <div>
           <Center>
             <Stack>

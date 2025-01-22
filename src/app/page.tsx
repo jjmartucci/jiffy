@@ -1,6 +1,8 @@
+import HomepageTabs from "@/components/HomepageTabs/HomepageTabs";
 import prisma from "../db";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import SearchResults from "@/components/SearchResults/SearchResults";
+import { Tabs } from "@mantine/core";
 
 export const revalidate = 60;
 
@@ -18,10 +20,23 @@ export default async function Home() {
     ],
   });
 
+  const newGifs = await prisma.gif.findMany({
+    skip: 0,
+    take: 20,
+    include: {
+      tags: true,
+    },
+    orderBy: [
+      {
+        createdAt: "desc",
+      },
+    ],
+  });
+
   return (
     <div>
       <SearchBar />
-      <SearchResults searchResults={gifs} />
+      <HomepageTabs gifs={gifs} newGifs={newGifs} />
     </div>
   );
 }

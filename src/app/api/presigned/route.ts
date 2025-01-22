@@ -120,6 +120,8 @@ export async function POST(request: NextRequest) {
   });
 
   // update the search index with the new gif included
-  fetch(`${process.env.NEXT_PUBLIC_BASE_PATH}/api/admin/scan`);
+  fetch(`${process.env.NEXT_PUBLIC_BASE_PATH}/api/search/updateIndex`, {
+    method: "POST",
+  });
   return NextResponse.json({ success: true, gif: createdGif });
 }
