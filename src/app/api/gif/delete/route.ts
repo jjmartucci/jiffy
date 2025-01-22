@@ -4,7 +4,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db";
-import { deleteFileByFilename, deleteS3Keys } from "@/app/utilities/s3";
+import { deleteFileByFilename } from "@/app/utilities/s3";
 import { serversideAuth } from "@/app/utilities/serversideAuth";
 
 export async function POST(request: NextRequest) {
