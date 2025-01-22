@@ -1,8 +1,6 @@
 import HomepageTabs from "@/components/HomepageTabs/HomepageTabs";
 import prisma from "../db";
 import SearchBar from "@/components/SearchBar/SearchBar";
-import SearchResults from "@/components/SearchResults/SearchResults";
-import { Tabs } from "@mantine/core";
 
 export const revalidate = 60;
 

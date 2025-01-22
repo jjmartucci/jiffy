@@ -1,9 +1,10 @@
 "use client";
 import SearchResults from "@/components/SearchResults/SearchResults";
 import { Flex, Space, Tabs } from "@mantine/core";
+import { Gif } from "@prisma/client";
 type Props = {
-  gifs: Array<any>;
-  newGifs: Array<any>;
+  gifs: Array<Gif>;
+  newGifs: Array<Gif>;
 };
 const HomepageTabs = ({ gifs, newGifs }: Props) => {
   return (
