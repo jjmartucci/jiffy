@@ -62,6 +62,7 @@ const UploadPage = () => {
     setFiles(null);
     setDisplayFile("");
     setGifName("");
+    setGifDescription("");
     setGifTags([]);
   };
 
