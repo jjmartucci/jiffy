@@ -27,19 +27,19 @@ const Actions = ({ session }: ActionProps) => {
 
       {!session && <Button onClick={() => signIn()}>Sign in</Button>}
       {session && (
-        <>
-          <Button variant="light" onClick={() => signOut()}>
-            Sign out
-          </Button>
-          <ActionIcon
-            variant="filled"
-            aria-label="Settings"
-            component={Link}
-            href="/admin"
-          >
-            <IconAdjustments stroke={1.5} />
-          </ActionIcon>
-        </>
+        <Button variant="light" onClick={() => signOut()}>
+          Sign out
+        </Button>
+      )}
+      {session && session.role.name === "admin" && (
+        <ActionIcon
+          variant="filled"
+          aria-label="Settings"
+          component={Link}
+          href="/admin"
+        >
+          <IconAdjustments stroke={1.5} />
+        </ActionIcon>
       )}
     </>
   );
