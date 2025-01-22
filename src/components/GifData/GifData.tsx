@@ -25,6 +25,8 @@ type Props = {
   views: number;
   description: string;
   setDescription: Dispatch<SetStateAction<string | true>>;
+  name: string;
+  setName: Dispatch<SetStateAction<string>>;
 };
 const GifData = ({
   data,
@@ -35,6 +37,8 @@ const GifData = ({
   description,
   setDescription,
   views,
+  name,
+  setName,
 }: Props) => {
   if (!data) {
     return null;
@@ -49,6 +53,8 @@ const GifData = ({
             setTags={setGifTags}
             description={description}
             setDescription={setDescription}
+            name={name}
+            setName={setName}
           ></EditGifForm>
         )}
 

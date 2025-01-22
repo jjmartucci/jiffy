@@ -1,5 +1,6 @@
 import {
   DeleteObjectsCommand,
+  DeleteObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
@@ -62,19 +63,42 @@ export const listBucket = async (): Promise<Array<string>> => {
   }
 };
 
+export const deleteFileByFilename = async (key: string) => {
+  const fullKey = `${process.env.NEXT_PUBLIC_UPLOAD_DIRECTORY}${key}`;
+  const bucketParams = { Bucket: s3BucketName, Key: fullKey };
+  const client = getS3Client();
+
+  console.log(`Deleting ${fullKey}.`);
+  try {
+    const data = await client.send(new DeleteObjectCommand(bucketParams));
+    console.log("Success. Object deleted.", data);
+    return data; // For unit tests.
+  } catch (err) {
+    console.log("Error", err);
+  }
+};
+
 export const deleteS3Keys = async ({ keys }: { keys: [string] }) => {
   const client = getS3Client();
+
+  const keysWithPath = keys.map(
+    (k) => `${process.env.NEXT_PUBLIC_UPLOAD_DIRECTORY}${k}`
+  );
+  const keysToDelete = keysWithPath.map((k) => ({
+    Key: k,
+  }));
+  console.log(`Deleting ${keysWithPath.join(" ")}`);
 
   try {
     const { Deleted } = await client.send(
       new DeleteObjectsCommand({
         Bucket: s3BucketName,
         Delete: {
-          Objects: keys.map((k) => ({ Key: k })),
+          Objects: keysToDelete,
         },
       })
     );
-    for (const key in keys) {
+    for (const key in keysWithPath) {
       await waitUntilObjectNotExists(
         { client },
         { Bucket: s3BucketName, Key: key }

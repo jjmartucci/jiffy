@@ -7,6 +7,7 @@ import GifData from "../GifData/GifData";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { createUrl } from "@/app/utilities/gifurl";
+import { useRouter } from "next/navigation";
 
 type Props = {
   gifData: Prisma.GifSelect;
@@ -14,6 +15,7 @@ type Props = {
 
 const GifPage = ({ gifData }: Props) => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const [gif, setGif] = useState(gifData);
   const [editMode, setEditMode] = useState(false);
@@ -25,6 +27,7 @@ const GifPage = ({ gifData }: Props) => {
   const [newDescription, setNewDescription] = useState(
     gifData?.description || ""
   );
+  const [newName, setNewName] = useState(gifData?.name || "");
 
   const imageUrl = createUrl(
     process.env.NEXT_PUBLIC_IMAGE_HOST_URL,
@@ -43,6 +46,7 @@ const GifPage = ({ gifData }: Props) => {
     if (editMode) {
       const updateData = {
         ...gif,
+        name: newName,
         description: newDescription,
         tags: gifTags,
         user: session.id,
@@ -76,6 +80,7 @@ const GifPage = ({ gifData }: Props) => {
       }),
     });
     setDeleting(false);
+    router.push("/");
   };
 
   return (
@@ -102,6 +107,8 @@ const GifPage = ({ gifData }: Props) => {
             setDescription={setNewDescription}
             imageUrl={imageUrl}
             views={gif.views}
+            name={newName}
+            setName={setNewName}
           />
 
           {session && (

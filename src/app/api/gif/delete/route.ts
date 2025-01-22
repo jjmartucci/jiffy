@@ -4,7 +4,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db";
-import { deleteS3Keys } from "@/app/utilities/s3";
+import { deleteFileByFilename, deleteS3Keys } from "@/app/utilities/s3";
 import { serversideAuth } from "@/app/utilities/serversideAuth";
 
 export async function POST(request: NextRequest) {
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       id: formData.id,
     },
   });
-  deleteS3Keys({ keys: [deleteGif.filename] });
+  await deleteFileByFilename(deleteGif.filename);
 
   return NextResponse.json({ success: true, gif: deleteGif });
 }

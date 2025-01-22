@@ -1,5 +1,5 @@
 "use client";
-import { Stack, Textarea } from "@mantine/core";
+import { Stack, Textarea, TextInput } from "@mantine/core";
 import { Prisma } from "@prisma/client";
 
 import { Dispatch, SetStateAction } from "react";
@@ -13,11 +13,21 @@ type Props = {
   description: string;
   setDescription: Dispatch<SetStateAction<string>>;
   views: number;
+  name: string;
+  setName: Dispatch<SetStateAction<string>>;
 };
-const EditGifForm = ({ description, setDescription, tags, setTags }: Props) => {
+const EditGifForm = ({
+  description,
+  name,
+  setName,
+  setDescription,
+  tags,
+  setTags,
+}: Props) => {
   return (
     <>
       <Stack>
+        <TextInput value={name} onChange={(e) => setName(e.target.value)} />
         <Textarea
           placeholder="I am a gif of [something] showing [humorous situation]."
           autosize
