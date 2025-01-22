@@ -122,6 +122,8 @@ const UploadPage = () => {
         formData.append("tags", JSON.stringify(gifTags));
         formData.append("height", `${imageHeight}`);
         formData.append("width", `${imageWidth}`);
+        formData.append("description", gifDescription);
+
         const localSave = await fetch("/api/upload/local", {
           method: "POST",
           body: formData,
@@ -166,6 +168,7 @@ const UploadPage = () => {
                 width: imageWidth,
                 height: imageHeight,
                 tags: gifTags,
+                description: gifDescription,
               };
               aclData.append("key", res.key);
               const presignedPost = await fetch("/api/presigned", {

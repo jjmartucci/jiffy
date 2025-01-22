@@ -113,6 +113,7 @@ export async function POST(request: NextRequest) {
       width: parseInt(formData.width),
       height: parseInt(formData.height),
       userId: session?.id,
+      description: formData.description,
       tags: {
         connectOrCreate: tagdb,
       },

@@ -13,6 +13,7 @@ export async function POST(request: Request) {
   const height = formData.get("height") as string;
   const width = formData.get("width") as string;
   const tags: [string] = JSON.parse(formData.get("tags") as string);
+  const description = formData.get("description") as string;
   const session = await getServerSession(authOptions);
 
   if (!file) {
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
       width: parseInt(width),
       height: parseInt(height),
       userId: session?.id,
+      description: description,
       tags: {
         connectOrCreate: tagdb,
       },
