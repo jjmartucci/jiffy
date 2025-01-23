@@ -10,25 +10,34 @@ import {
   Space,
   Table,
   Group,
+  FileButton,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Admin = () => {
+  const router = useRouter();
   const { data: session } = useSession();
   const [backingUp, setBackingUp] = useState(false);
+  const [restoringDb, setRestoringDb] = useState(false);
+  const [error, setError] = useState(false);
   const [gifCount, setGifCount] = useState();
   const [scanning, setScanning] = useState(false);
   const [gifsAdded, setGifsAdded] = useState(0);
   const [users, setUsers] = useState<Array<User>>([]);
   const [opened, { open, close }] = useDisclosure(false);
+  const [errorOpened, { open: errorOpen, close: errorClose }] =
+    useDisclosure(false);
+
   const [rebuilding, setRebuilding] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>();
   const [dialogOpened, { close: dialogClose }] = useDisclosure(false);
   const [updateOpened, { open: updateOpen, close: updateClose }] =
     useDisclosure(false);
+  const [file, setFile] = useState<File | null>(null);
 
   const getCount = async () => {
     const countRequest = await fetch("/api/admin/count");
@@ -57,6 +66,25 @@ const Admin = () => {
     setBackingUp(true);
     await fetch("/api/admin/backup", { method: "POST" });
     setBackingUp(false);
+  };
+
+  const restoreDb = async () => {
+    setRestoringDb(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    const request = await fetch("/api/admin/restore", {
+      method: "PUT",
+      body: formData,
+    });
+    const response = await request.json();
+    if (request.status === 500) {
+      setError(response.error);
+      errorOpen();
+    }
+    if (request.status === 200) {
+      router.refresh();
+    }
+    setRestoringDb(false);
   };
 
   /** More logic needs to be done here, should be a soft delete
@@ -163,6 +191,24 @@ const Admin = () => {
         Backup Now
       </Button>
 
+      <Space h="xl" />
+      <Title order={2}>Database Restore</Title>
+      <Text>Upload a SQLite db to overwrite the existing one.</Text>
+      <Space h="md" />
+      <Group>
+        <FileButton onChange={setFile} accept="application/x-sqlite3">
+          {(props) => <Button {...props}>Select DB file</Button>}
+        </FileButton>
+        <Button disabled={!file} color="red" onClick={() => setFile(null)}>
+          Reset
+        </Button>
+        {file && (
+          <Button onClick={restoreDb} loading={restoringDb}>
+            Restore DB
+          </Button>
+        )}
+      </Group>
+
       <AddUserModal opened={opened} close={close} />
 
       <UpdateUserModal
@@ -170,6 +216,12 @@ const Admin = () => {
         opened={updateOpened}
         close={updateClose}
       />
+
+      {error && (
+        <Dialog opened={errorOpened} onClose={errorClose}>
+          {error}
+        </Dialog>
+      )}
 
       <Dialog
         opened={dialogOpened}
