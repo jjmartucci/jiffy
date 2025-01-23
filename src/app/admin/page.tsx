@@ -136,7 +136,7 @@ const Admin = () => {
   };
 
   return (
-    <AuthorizedPage>
+    <AuthorizedPage requiresAdmin>
       <Space h="xl" />
       <Title>Hi {session?.user.name}</Title>
       <Text>There are {gifCount} gifs here.</Text>
