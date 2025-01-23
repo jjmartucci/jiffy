@@ -71,6 +71,20 @@ const GifPage = ({ gifData }: Props) => {
     }
   };
 
+  const canEdit = () => {
+    if (!session) {
+      return false;
+    }
+    if (session?.role.name === "admin") {
+      return true;
+    }
+    console.log(gif.createdBy);
+    if (gif.userId === session?.id) {
+      return true;
+    }
+    return false;
+  };
+
   const deleteGif = async () => {
     setDeleting(true);
     await fetch("/api/gif/delete", {
@@ -111,7 +125,7 @@ const GifPage = ({ gifData }: Props) => {
             setName={setNewName}
           />
 
-          {session && (
+          {canEdit() && (
             <>
               <Space h="xl" />
               <Group justify="space-between">
