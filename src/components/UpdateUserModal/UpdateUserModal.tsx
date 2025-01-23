@@ -37,7 +37,7 @@ function UpdateUserModal({ currentUser, opened, close }: Props) {
         isAdmin,
       }),
     });
-    const response = await addRequest.json();
+    await addRequest.json();
     if (addRequest.status === 200) {
       close();
     }
