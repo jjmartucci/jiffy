@@ -38,7 +38,7 @@ function UpdateUserModal({ currentUser, opened, close }: Props) {
       }),
     });
     const response = await addRequest.json();
-    if (response.status === "200") {
+    if (addRequest.status === 200) {
       close();
     }
   };
@@ -71,7 +71,6 @@ function UpdateUserModal({ currentUser, opened, close }: Props) {
             defaultChecked
             color="grape"
             label="is admin?"
-            disabled={currentUser?.isDefaultUser}
           />
 
           <Button onClick={updateUser} disabled={!username || !password}>

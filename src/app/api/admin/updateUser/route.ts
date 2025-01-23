@@ -9,7 +9,7 @@ export async function PATCH(request: NextRequest) {
   const data = await request.json();
   const userId = data.userId;
   const password = await hash(data.password, 12);
-  const isAdmin = data.admin;
+  const isAdmin = data.isAdmin;
 
   const role = await prisma.role.findUnique({
     where: {

@@ -5,6 +5,9 @@ if (process.env.NEXT_PUBLIC_IMAGE_HOST_URL) {
   imageHost = new URL(process.env.NEXT_PUBLIC_IMAGE_HOST_URL);
 }
 
+console.log(
+  `Adding hostname: ${imageHost!.hostname} and pathname: ${imageHost!.pathname}`
+);
 const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
