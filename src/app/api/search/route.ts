@@ -24,6 +24,7 @@ export async function GET(request: NextRequest) {
   try {
     const results = idx.search(query);
     console.log(`Found ${results.length} results for ${query}`);
+    console.log(results)
 
     // first do a specific name search
     const matchingGifs = await prisma.gif.findMany({
@@ -34,8 +35,13 @@ export async function GET(request: NextRequest) {
 
     console.log(`Returning ${matchingGifs.length} results for ${query}`);
 
+    const orderedGifs = results.map(result => {
+      return matchingGifs.find(gif => gif.id === result.ref)
+    })
+
+
     return NextResponse.json({
-      gifs: [...matchingGifs],
+      gifs: [...orderedGifs],
       status: 200,
     });
   } catch (e) {

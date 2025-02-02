@@ -51,6 +51,7 @@ const SkeletonImage = ({ width, height, src, alt }: Props) => {
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
         className={styles.SkeletonImage}
+        unoptimized
       />
     </>
   );

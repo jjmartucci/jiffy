@@ -39,7 +39,7 @@ export default async function Search({
           <Center>
             <Stack>
               <Title order={2}>{`No results for ${query}`}</Title>
-              <Image src={noResults} alt="No results found" />
+              <Image src={noResults} alt="No results found" unoptimized />
             </Stack>
           </Center>
         </div>
