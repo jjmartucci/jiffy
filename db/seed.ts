@@ -15,7 +15,7 @@ const makeUser = async () => {
 };
 
 async function seedData() {
-  /*const defaultUser = await prisma.user.findFirst({
+  const defaultUser = await prisma.user.findFirst({
     where: {
       isDefaultUser: true,
     },
@@ -25,7 +25,7 @@ async function seedData() {
     console.info("Default user and roles already exists.");
     return;
   }
-*/
+
   console.info("Seeding default user and roles.");
   const users = await makeUser();
 
