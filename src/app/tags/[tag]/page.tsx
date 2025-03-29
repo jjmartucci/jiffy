@@ -1,5 +1,3 @@
-import GifPage from "@/components/GifPage/GifPage";
-import Gif from "@/components/Gif/Gif";
 import SearchResults from "@/components/SearchResults/SearchResults";
 
 export default async function Page({
