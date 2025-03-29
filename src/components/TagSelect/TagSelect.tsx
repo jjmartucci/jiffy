@@ -58,6 +58,7 @@ export function TagSelect({ value, setValue }: Props) {
 
   const options = data
     .filter((item) => item.toLowerCase().includes(search.trim().toLowerCase()))
+    .slice(0, 7)
     .map((item) => (
       <Combobox.Option value={item} key={item} active={value.includes(item)}>
         <Group gap="sm">

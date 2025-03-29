@@ -15,6 +15,7 @@ import { Badge } from "@mantine/core";
 import { Dispatch, SetStateAction } from "react";
 
 import EditGifForm from "./EditGifForm";
+import Link from "next/link";
 
 type Props = {
   data: Prisma.GifSelect;
@@ -73,7 +74,9 @@ const GifData = ({
                   gradient={{ from: "blue", to: "cyan", deg: 90 }}
                   key={t.id}
                 >
+                  <Link href={`/tags/${t.id}`} passHref>
                   {t.name}
+                  </Link>
                 </Badge>
               ))}
             </Flex>
