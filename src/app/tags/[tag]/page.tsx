@@ -4,10 +4,8 @@ import type { Metadata } from 'next'
 import {createUrl} from "@/app/utilities/gifurl";
 
 
-
 export async function generateMetadata(
-    { params, searchParams }: Props,
-    parent: ResolvingMetadata
+    { params }: any,
 ): Promise<Metadata> {
     // read route params
     const tag = (await params).tag;
