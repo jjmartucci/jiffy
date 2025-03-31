@@ -5,7 +5,9 @@ import {createUrl} from "@/app/utilities/gifurl";
 
 
 export async function generateMetadata(
-    { params }: any,
+    { params }: {
+        params: Promise<{ tag: string }>;
+    },
 ): Promise<Metadata> {
     // read route params
     const tag = (await params).tag;
