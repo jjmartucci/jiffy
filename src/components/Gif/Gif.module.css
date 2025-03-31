@@ -1,0 +1,40 @@
+.Gif {
+    position: relative;
+    overflow: hidden;
+}
+
+.Gif__name {
+    position: absolute;
+    bottom: -2rem;
+    left: 0;
+    padding: .2rem;
+    background: rgba(0,0,0,.8);
+    opacity: 0;
+    width: 100%;
+    text-wrap: nowrap;
+    overflow: hidden;
+    transition: all 300ms ease-in-out;
+
+}
+
+.Gif__name:before {
+    content: "";
+    background: linear-gradient(
+            45deg,
+            var(--mantine-color-cyan-2),
+            var(--mantine-color-yellow-2),
+            var(--mantine-color-teal-7),
+            var(--mantine-color-grape-7)
+    );
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1px;
+    width: 100%;
+}
+
+.Gif:hover .Gif__name {
+    bottom: 0;
+    background: rgba(0,0,0,.8);
+    opacity: 1;
+}
