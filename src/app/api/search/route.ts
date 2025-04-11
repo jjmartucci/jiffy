@@ -58,17 +58,16 @@ export async function GET(request: NextRequest) {
 
   const idx = lunr.Index.load(JSON.parse(data).index);
   try {
-    const results = idx.search(query);
+    /** prior Lunr implementation
 
+     const results = idx.search(query);
 
-    // first do a specific name search
     const matchingGifs = await prisma.gif.findMany({
       where: {
         id: { in: results.map((r) => r.ref) },
       },
     });
 
-    /** prior Lunr implementation
     const orderedGifs = results.map(result => {
       return matchingGifs.find(gif => gif.id === result.ref)
     })
