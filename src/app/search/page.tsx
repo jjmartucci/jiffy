@@ -15,6 +15,7 @@ export default async function Search({
     searchURL.searchParams.set("query", searchString);
     const searchFetch = await fetch(searchURL.toString());
     const response = await searchFetch.json();
+
     return response.gifs;
   };
 
