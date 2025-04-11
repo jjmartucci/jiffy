@@ -68,9 +68,11 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    /** prior Lunr implementation
     const orderedGifs = results.map(result => {
       return matchingGifs.find(gif => gif.id === result.ref)
     })
+    */
 
     return NextResponse.json({
       gifs: fuseResults.map(fs => fs.item),
