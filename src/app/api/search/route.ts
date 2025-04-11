@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db";
 import path from "path";
 import fs from "fs/promises";
-import lunr from "lunr";
 import Fuse from 'fuse.js'
 
 
@@ -54,9 +53,9 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  const data = await fs.readFile(indexPath, "utf8");
+  // const data = await fs.readFile(indexPath, "utf8");
+  // const idx = lunr.Index.load(JSON.parse(data).index);
 
-  const idx = lunr.Index.load(JSON.parse(data).index);
   try {
     /** prior Lunr implementation
 
