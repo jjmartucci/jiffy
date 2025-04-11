@@ -11,8 +11,8 @@ export async function GET(request: NextRequest) {
     method: "GET",
   });
 
-  const gifs = await req.json()
-  console.log(gifs.gifs[0])
+  const {gifs} = await req.json()
+  console.log(`found gifs`, gifs);
 
   if (gifs.length === 0) {
     return NextResponse.json({
