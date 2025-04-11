@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
   });
 
   const {gifs} = await req.json()
+  console.log(gifs)
   console.log(`found gifs`, gifs);
 
   if (gifs.length === 0) {
@@ -21,7 +22,7 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  const bestMatch =  gifs.gifs[0];
+  const bestMatch =  gifs[0];
 
   const imageUrl = createUrl(
     process.env.NEXT_PUBLIC_IMAGE_HOST_URL,
