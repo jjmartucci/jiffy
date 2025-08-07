@@ -3,6 +3,18 @@ import SearchResults from "@/components/SearchResults/SearchResults";
 import noResults from "@/images/no-results.gif";
 import { Center, Space, Stack, Title } from "@mantine/core";
 import Image from "next/image";
+
+import type { Metadata } from 'next'
+
+export async function generateMetadata(
+    { params, searchParams }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+  const query = (await searchParams).q;
+
+  return {title: `Jiffy - Search results for ${query}`}
+}
+
 export default async function Search({
   searchParams,
 }: {
