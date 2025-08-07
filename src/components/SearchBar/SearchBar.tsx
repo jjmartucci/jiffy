@@ -9,13 +9,16 @@ import styles from "./SearchBar.module.css";
 const SearchBar = () => {
   const router = useRouter();
   const [value, setValue] = useState("");
-
+  const [gifCount, setGifCount] = useState();
   const [autocompleteTerms, setautocompleteTerms] = useState([]);
   const callSearch = (searchString: string) => {
     console.log(searchString);
     router.push(`/search?q=${searchString}`);
   };
-
+  const getCount = async () => {
+    const countRequest = await fetch("/api/admin/count");
+    setGifCount((await countRequest.json()).gifCount);
+  };
   const submitSearch = async (e: Event) => {
     e.preventDefault();
     callSearch(value);
@@ -25,6 +28,10 @@ const SearchBar = () => {
     const data = (await request.json()).searchTerms;
     setautocompleteTerms(data);
   };
+
+  useEffect(() => {
+    getCount();
+  }, []);
 
   const renderAutocompleteOption: AutocompleteProps["renderOption"] = ({
     option,
@@ -47,7 +54,7 @@ const SearchBar = () => {
       <GlowBox>
         <Autocomplete
           size="xl"
-          placeholder="Search"
+          placeholder={`Search all ${gifCount} gifs...`}
           limit={5}
           onFocus={() => setValue("")}
           value={value}
