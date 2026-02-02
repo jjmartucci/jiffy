@@ -40,7 +40,9 @@ export async function GET(request: NextRequest) {
   }
 
   const fuse = new Fuse(allGifs, fuseOptions);
-  const fuseResults = fuse.search(query)
+  // Normalize query: replace hyphens/underscores with spaces for looser matching
+  const normalizedQuery = query?.replace(/[-_]+/g, ' ') || '';
+  const fuseResults = fuse.search(normalizedQuery)
   console.log(`fuseResults`, fuseResults)
   // end fuse search
 
