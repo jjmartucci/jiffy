@@ -31,10 +31,16 @@ export default async function Home() {
     ],
   });
 
+  const tags = await prisma.tag.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
   return (
     <div>
       <SearchBar />
-      <HomepageTabs gifs={gifs} newGifs={newGifs} />
+      <HomepageTabs gifs={gifs} newGifs={newGifs} tags={tags} />
     </div>
   );
 }
