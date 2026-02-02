@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     keys: [
       "name",
       "description",
-      "tags"
+      "tags.name"
     ]
   }
 
