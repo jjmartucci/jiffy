@@ -4,6 +4,14 @@ const exec = util.promisify(require("child_process").exec);
 const fs = require("fs");
 const path = require("path");
 
+function getDbPath() {
+  // Use DB_PATH env var if set (for Render persistent disk), otherwise default
+  if (process.env.DB_PATH) {
+    return process.env.DB_PATH;
+  }
+  return path.join(process.cwd(), "db", "jiffy.db");
+}
+
 async function execute(command) {
   try {
     console.log(`Running ${command}`);
@@ -18,8 +26,17 @@ async function execute(command) {
 async function startUp() {
   await execute("echo the PWD is : ${PWD}");
 
-  if (fs.existsSync(path.join(process.cwd(), "db", "jiffy.db"))) {
-    // for now do nothing?
+  const dbPath = getDbPath();
+  console.log(`Database path: ${dbPath}`);
+
+  // Ensure the directory exists (important for persistent disk)
+  const dbDir = path.dirname(dbPath);
+  if (!fs.existsSync(dbDir)) {
+    console.log(`Creating database directory: ${dbDir}`);
+    fs.mkdirSync(dbDir, { recursive: true });
+  }
+
+  if (fs.existsSync(dbPath)) {
     console.log("we have a database already.");
   } else {
     await execute("npx prisma db push --skip-generate");

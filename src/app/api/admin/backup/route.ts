@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import { serversideAuth } from "@/app/utilities/serversideAuth";
 import { uploadFile } from "@/app/utilities/s3";
-import path from "path";
+import { getDbPath } from "@/app/utilities/dbPath";
 
 export async function POST() {
   await serversideAuth();
 
-  // get the location of the database on the server
-  const dbPath = path.join(process.cwd(), "db", "jiffy.db");
+  const dbPath = getDbPath();
 
   // execute S3 upload to the db storage location
   try {

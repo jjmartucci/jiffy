@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { serversideAuth } from "@/app/utilities/serversideAuth";
-import path from "path";
+import { getDbPath, getDbBackupPath, getDbTempPath } from "@/app/utilities/dbPath";
 import fs from "fs/promises";
 
 export async function PUT(request: NextRequest) {
@@ -10,10 +10,9 @@ export async function PUT(request: NextRequest) {
   const formData = await request.formData();
   const file = formData.get("file") as File;
 
-  // get the location of the database on the server
-  const existingDbPath = path.join(process.cwd(), "db", "jiffy.db");
-  const backupPath = path.join(process.cwd(), "db", "jiffy-backup.db");
-  const newDbPath = path.join(process.cwd(), "db", `jiffy-temp.db`);
+  const existingDbPath = getDbPath();
+  const backupPath = getDbBackupPath();
+  const newDbPath = getDbTempPath();
 
   // save the uploaded db file to a temporary location
   try {
