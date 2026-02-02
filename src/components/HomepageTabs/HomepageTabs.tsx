@@ -8,11 +8,15 @@ type Props = {
   gifs: Array<Gif>;
   newGifs: Array<Gif>;
   tags: Array<Tag>;
+  defaultTab?: string;
 };
 
-const HomepageTabs = ({ gifs, newGifs, tags }: Props) => {
+const HomepageTabs = ({ gifs, newGifs, tags, defaultTab }: Props) => {
+  const validTabs = ["popular", "recent", "tags"];
+  const initialTab = validTabs.includes(defaultTab || "") ? defaultTab : "popular";
+
   return (
-    <Tabs color="violet" variant="pills" radius="xl" defaultValue="popular">
+    <Tabs color="violet" variant="pills" radius="xl" defaultValue={initialTab}>
       <Flex
         mih={50}
         gap="lg"

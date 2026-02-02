@@ -1,4 +1,5 @@
 import SearchResults from "@/components/SearchResults/SearchResults";
+import TopNav from "@/components/TopNav/TopNav";
 
 import type { Metadata } from 'next'
 
@@ -44,7 +45,8 @@ export default async function Page({
 
     return (
         <div>
-        <h1>{taggedGifs.name}</h1>
+            <TopNav />
+            <h1>{taggedGifs.name}</h1>
             <SearchResults searchResults={taggedGifs.gifs} />
         </div>
     )
