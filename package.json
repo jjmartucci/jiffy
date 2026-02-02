@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate && prisma db push && prisma db seed && next build",
-    "initialize": "prisma db push && prisma db seed",
-    "start": "next start",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
+    "start": "prisma db push && prisma db seed && next start",
     "lint": "next lint"
   },
   "prisma": {

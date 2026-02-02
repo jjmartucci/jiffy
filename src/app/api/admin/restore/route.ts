@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { serversideAuth } from "@/app/utilities/serversideAuth";
 import { getDbPath, getDbBackupPath, getDbTempPath } from "@/app/utilities/dbPath";
 import fs from "fs/promises";
+import prisma from "@/db";
 
 export async function PUT(request: NextRequest) {
   console.info("Running /api/admin/restore");
@@ -42,6 +43,9 @@ export async function PUT(request: NextRequest) {
       { status: 500 }
     );
   }
+
+  // Disconnect Prisma so it reconnects to the new database file
+  await prisma.$disconnect();
 
   return NextResponse.json({ message: "Database restored" }, { status: 200 });
 }
