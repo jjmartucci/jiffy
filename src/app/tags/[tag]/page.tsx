@@ -1,6 +1,8 @@
 import SearchResults from "@/components/SearchResults/SearchResults";
 
 import type { Metadata } from 'next'
+
+export const dynamic = "force-dynamic";
 import {createUrl} from "@/app/utilities/gifurl";
 
 

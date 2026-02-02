@@ -6,6 +6,8 @@ import Image from "next/image";
 
 import type {Metadata} from 'next'
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(
     {searchParams}: Props,
 ): Promise<Metadata> {

@@ -2,7 +2,7 @@ import HomepageTabs from "@/components/HomepageTabs/HomepageTabs";
 import prisma from "../db";
 import SearchBar from "@/components/SearchBar/SearchBar";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const gifs = await prisma.gif.findMany({
