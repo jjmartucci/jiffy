@@ -19,6 +19,14 @@ export default async function TagsPage() {
     },
   });
 
+  const untaggedCount = await prisma.gif.count({
+    where: {
+      tags: {
+        none: {},
+      },
+    },
+  });
+
   return (
     <div>
       <SearchBar />
@@ -37,6 +45,18 @@ export default async function TagsPage() {
             {tag.name} ({tag._count.gifs})
           </Badge>
         ))}
+        {untaggedCount > 0 && (
+          <Badge
+            size="lg"
+            variant="outline"
+            color="gray"
+            component={Link}
+            href="/tags/untagged"
+            style={{ cursor: "pointer" }}
+          >
+            untagged ({untaggedCount})
+          </Badge>
+        )}
       </Flex>
     </div>
   );
