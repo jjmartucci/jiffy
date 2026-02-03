@@ -37,7 +37,7 @@ const TopNav = ({ active }: Props) => {
         </Button>
         <Button
           component={Link}
-          href="/?tab=tags"
+          href="/tags"
           variant={active === "tags" ? "filled" : "light"}
           color="violet"
           radius="xl"

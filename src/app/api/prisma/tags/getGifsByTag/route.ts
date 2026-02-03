@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     }
     const taggedGifs = await prisma.tag.findUnique({
         where: {
-            id: parseInt(tag)
+            name: tag
         },
         include: {
             gifs: true,

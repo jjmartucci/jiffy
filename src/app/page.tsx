@@ -36,16 +36,10 @@ export default async function Home({
     ],
   });
 
-  const tags = await prisma.tag.findMany({
-    orderBy: {
-      name: "asc",
-    },
-  });
-
   return (
     <div>
       <SearchBar />
-      <HomepageTabs gifs={gifs} newGifs={newGifs} tags={tags} defaultTab={tab} />
+      <HomepageTabs gifs={gifs} newGifs={newGifs} defaultTab={tab} />
     </div>
   );
 }

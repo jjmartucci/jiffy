@@ -74,7 +74,7 @@ const GifData = ({
                   gradient={{ from: "blue", to: "cyan", deg: 90 }}
                   key={t.id}
                 >
-                  <Link href={`/tags/${t.id}`} passHref>
+                  <Link href={`/tags/${encodeURIComponent(t.name)}`} passHref>
                   {t.name}
                   </Link>
                 </Badge>

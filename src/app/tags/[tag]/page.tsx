@@ -1,5 +1,5 @@
 import SearchResults from "@/components/SearchResults/SearchResults";
-import TopNav from "@/components/TopNav/TopNav";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 import type { Metadata } from 'next'
 
@@ -13,9 +13,9 @@ export async function generateMetadata(
     },
 ): Promise<Metadata> {
     // read route params
-    const tag = (await params).tag;
+    const tag = decodeURIComponent((await params).tag);
     const data = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_PATH}/api/prisma/tags/getGifsByTag?tag=${tag}`
+        `${process.env.NEXT_PUBLIC_BASE_PATH}/api/prisma/tags/getGifsByTag?tag=${encodeURIComponent(tag)}`
     );
     const {taggedGifs} = await data.json();
     const imageUrl = createUrl(
@@ -37,15 +37,15 @@ export default async function Page({
                                    }: {
     params: Promise<{ tag: string }>;
 }) {
-    const tag = (await params).tag;
+    const tag = decodeURIComponent((await params).tag);
     const data = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_PATH}/api/prisma/tags/getGifsByTag?tag=${tag}`
+        `${process.env.NEXT_PUBLIC_BASE_PATH}/api/prisma/tags/getGifsByTag?tag=${encodeURIComponent(tag)}`
     );
     const {taggedGifs} = await data.json();
 
     return (
         <div>
-            <TopNav />
+            <SearchBar />
             <h1>{taggedGifs.name}</h1>
             <SearchResults searchResults={taggedGifs.gifs} />
         </div>

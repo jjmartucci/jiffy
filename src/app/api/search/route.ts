@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     // findAllMatches: false,
     // minMatchCharLength: 1,
     // location: 0,
-    threshold: .6,
+    threshold: .4,
     // distance: 100,
     // useExtendedSearch: false,
     ignoreLocation: true, // match anywhere in descriptions

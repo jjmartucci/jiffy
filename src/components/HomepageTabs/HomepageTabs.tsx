@@ -1,18 +1,17 @@
 "use client";
 import SearchResults from "@/components/SearchResults/SearchResults";
-import { Badge, Flex, Space, Tabs } from "@mantine/core";
-import { Gif, Tag } from "@prisma/client";
+import { Button, Flex, Space, Tabs } from "@mantine/core";
+import { Gif } from "@prisma/client";
 import Link from "next/link";
 
 type Props = {
   gifs: Array<Gif>;
   newGifs: Array<Gif>;
-  tags: Array<Tag>;
   defaultTab?: string;
 };
 
-const HomepageTabs = ({ gifs, newGifs, tags, defaultTab }: Props) => {
-  const validTabs = ["popular", "recent", "tags"];
+const HomepageTabs = ({ gifs, newGifs, defaultTab }: Props) => {
+  const validTabs = ["popular", "recent"];
   const initialTab = validTabs.includes(defaultTab || "") ? defaultTab : "popular";
 
   return (
@@ -28,8 +27,16 @@ const HomepageTabs = ({ gifs, newGifs, tags, defaultTab }: Props) => {
         <Tabs.List>
           <Tabs.Tab value="popular">Popular</Tabs.Tab>
           <Tabs.Tab value="recent">Recent</Tabs.Tab>
-          <Tabs.Tab value="tags">Tags</Tabs.Tab>
         </Tabs.List>
+        <Button
+          component={Link}
+          href="/tags"
+          variant="light"
+          color="violet"
+          radius="xl"
+        >
+          Tags
+        </Button>
       </Flex>
       <Space h="lg" />
       <Tabs.Panel value="popular">
@@ -38,24 +45,6 @@ const HomepageTabs = ({ gifs, newGifs, tags, defaultTab }: Props) => {
 
       <Tabs.Panel value="recent">
         <SearchResults searchResults={newGifs} />
-      </Tabs.Panel>
-
-      <Tabs.Panel value="tags">
-        <Flex gap="sm" wrap="wrap" justify="center">
-          {tags.map((tag) => (
-            <Badge
-              key={tag.id}
-              size="lg"
-              variant="gradient"
-              gradient={{ from: "blue", to: "cyan", deg: 90 }}
-              component={Link}
-              href={`/tags/${tag.id}`}
-              style={{ cursor: "pointer" }}
-            >
-              {tag.name}
-            </Badge>
-          ))}
-        </Flex>
       </Tabs.Panel>
     </Tabs>
   );
