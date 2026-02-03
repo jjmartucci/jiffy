@@ -26,10 +26,10 @@ export async function GET(request: NextRequest) {
     // findAllMatches: false,
     // minMatchCharLength: 1,
     // location: 0,
-    threshold: .2, // default 0.6
+    threshold: .4, // default 0.6
     // distance: 100,
     // useExtendedSearch: false,
-    // ignoreLocation: false,
+    ignoreLocation: true, // match anywhere in descriptions
     // ignoreFieldNorm: false,
     // fieldNormWeight: 1,
     keys: [

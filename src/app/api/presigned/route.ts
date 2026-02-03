@@ -105,24 +105,32 @@ export async function POST(request: NextRequest) {
     };
   });
 
-  const createdGif = await Prisma.gif.create({
-    data: {
-      id: formData.cuid,
-      name: formData.name,
-      filename: formData.filename,
-      width: parseInt(formData.width),
-      height: parseInt(formData.height),
-      userId: session?.id,
-      description: formData.description,
-      tags: {
-        connectOrCreate: tagdb,
+  try {
+    const createdGif = await Prisma.gif.create({
+      data: {
+        id: formData.cuid,
+        name: formData.name,
+        filename: formData.filename,
+        width: parseInt(formData.width),
+        height: parseInt(formData.height),
+        userId: session?.id,
+        description: formData.description,
+        tags: {
+          connectOrCreate: tagdb,
+        },
       },
-    },
-  });
+    });
 
-  // update the search index with the new gif included
-  fetch(`${process.env.NEXT_PUBLIC_BASE_PATH}/api/search/updateIndex`, {
-    method: "POST",
-  });
-  return NextResponse.json({ success: true, gif: createdGif });
+    // update the search index with the new gif included
+    fetch(`${process.env.NEXT_PUBLIC_BASE_PATH}/api/search/updateIndex`, {
+      method: "POST",
+    });
+    return NextResponse.json({ success: true, gif: createdGif });
+  } catch (err) {
+    console.error("Failed to create gif record:", err);
+    return NextResponse.json(
+      { error: `Database error: ${err}` },
+      { status: 500 }
+    );
+  }
 }
