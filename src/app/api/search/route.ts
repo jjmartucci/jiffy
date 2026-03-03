@@ -18,31 +18,20 @@ export async function GET(request: NextRequest) {
   });
 
   const fuseOptions = {
-    // isCaseSensitive: false,
-    includeScore: true, // default false
-    // ignoreDiacritics: false,
-    // shouldSort: true,
-    // includeMatches: false,
-    // findAllMatches: false,
-    // minMatchCharLength: 1,
-    // location: 0,
-    threshold: .4,
-    // distance: 100,
-    // useExtendedSearch: false,
+    includeScore: true,
+    threshold: 0.3,
     ignoreLocation: true, // match anywhere in descriptions
-    // ignoreFieldNorm: false,
-    // fieldNormWeight: 1,
     keys: [
-      "name",
-      "description",
-      "tags.name"
+      { name: "name", weight: 3 },
+      { name: "tags.name", weight: 2 },
+      { name: "description", weight: 1 },
     ]
   }
 
   const fuse = new Fuse(allGifs, fuseOptions);
   // Normalize query: replace hyphens/underscores with spaces for looser matching
   const normalizedQuery = query?.replace(/[-_]+/g, ' ') || '';
-  const fuseResults = fuse.search(normalizedQuery)
+  const fuseResults = fuse.search(normalizedQuery).filter(r => (r.score ?? 1) < 0.3)
   console.log(`fuseResults`, fuseResults)
   // end fuse search
 
