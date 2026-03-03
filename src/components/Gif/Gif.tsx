@@ -4,8 +4,26 @@ import SkeletonImage from "../SkeletonImage/SkeletonImage";
 import { createUrl } from "@/app/utilities/gifurl";
 import styles from "./Gif.module.css";
 
+export type GiphyGif = {
+  id: string;
+  name: string;
+  filename: string;
+  width: number;
+  height: number;
+  source: 'giphy';
+  giphyPageUrl?: string;
+  description: string | null;
+  views: number;
+  tags: unknown[];
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  userId: string;
+};
+
+type LocalGif = Prisma.GifGetPayload<{ include: { tags: true } }>;
+
 type Props = {
-  data: Prisma.GifSelect;
+  data: LocalGif | GiphyGif;
 };
 
 const Gif = ({ data, ...rest }: Props) => {
@@ -13,13 +31,15 @@ const Gif = ({ data, ...rest }: Props) => {
     return <span>Please configure the NEXT_PUBLIC_IMAGE_HOST_URL!</span>;
   }
 
-  const imageUrl = createUrl(
-    process.env.NEXT_PUBLIC_IMAGE_HOST_URL,
-    data.filename
-  );
+  const isGiphy = 'source' in data && data.source === 'giphy';
+  const imageUrl = isGiphy
+    ? data.filename
+    : createUrl(process.env.NEXT_PUBLIC_IMAGE_HOST_URL, data.filename);
+  const href = isGiphy ? (data.giphyPageUrl ?? data.filename) : `/gif/${data.id}`;
+
   return (
     <div {...rest} className={styles.Gif}>
-      <Link href={`/gif/${data.id}`}>
+      <Link href={href} target={isGiphy ? "_blank" : undefined} rel={isGiphy ? "noopener noreferrer" : undefined}>
         <SkeletonImage
           width={data.width}
           height={data.height}

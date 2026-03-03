@@ -1,9 +1,11 @@
-import { Gif as Giftype } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import styles from "./SearchResults.module.css";
-import Gif from "../Gif/Gif";
+import Gif, { GiphyGif } from "../Gif/Gif";
+
+type LocalGif = Prisma.GifGetPayload<{ include: { tags: true } }>;
 
 type Props = {
-  searchResults: Array<Giftype>;
+  searchResults: Array<LocalGif | GiphyGif>;
 };
 const SearchResults = ({ searchResults }: Props) => {
   return (

@@ -59,23 +59,44 @@ export async function GET(request: NextRequest) {
   // const idx = lunr.Index.load(JSON.parse(data).index);
 
   try {
-    /** prior Lunr implementation
+    const RESULT_LIMIT = 10;
+    const localResults = fuseResults.map(fr => fr.item);
+    let gifs: unknown[] = localResults;
 
-     const results = idx.search(query);
-
-    const matchingGifs = await prisma.gif.findMany({
-      where: {
-        id: { in: results.map((r) => r.ref) },
-      },
-    });
-
-    const orderedGifs = results.map(result => {
-      return matchingGifs.find(gif => gif.id === result.ref)
-    })
-    */
+    if (localResults.length < RESULT_LIMIT && process.env.GIPHY_API_KEY && normalizedQuery) {
+      const needed = RESULT_LIMIT - localResults.length;
+      const giphyUrl = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${encodeURIComponent(normalizedQuery)}&limit=${needed}&rating=g`;
+      try {
+        const giphyRes = await fetch(giphyUrl);
+        const giphyData = await giphyRes.json();
+        const giphyGifs = (giphyData.data ?? []).map((gif: {
+          id: string;
+          title: string;
+          url: string;
+          images: { original: { url: string; width: string; height: string } };
+        }) => ({
+          id: `giphy_${gif.id}`,
+          name: gif.title || gif.id,
+          filename: gif.images.original.url,
+          width: parseInt(gif.images.original.width) || 480,
+          height: parseInt(gif.images.original.height) || 270,
+          description: null,
+          views: 0,
+          source: 'giphy' as const,
+          giphyPageUrl: gif.url,
+          tags: [],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          userId: '',
+        }));
+        gifs = [...localResults, ...giphyGifs];
+      } catch (e) {
+        console.error('Giphy fetch failed', e);
+      }
+    }
 
     return NextResponse.json({
-      gifs: fuseResults.map(fs => fs.item),
+      gifs,
       status: 200,
     });
   } catch (e) {
