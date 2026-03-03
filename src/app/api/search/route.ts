@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
         }) => ({
           id: `giphy_${gif.id}`,
           name: gif.title || gif.id,
-          filename: gif.images.original.url,
+          filename: `https://media.giphy.com/media/${gif.id}/giphy.gif`,
           width: parseInt(gif.images.original.width) || 480,
           height: parseInt(gif.images.original.height) || 270,
           description: null,
